@@ -1,0 +1,22 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h5>Time Logs</h5>
+  <div>
+    <button class="btn btn-outline-primary btn-sm me-2" (click)="toggleView('dayGridMonth')">
+      <i class="bi bi-calendar3"></i> Month Calendar
+    </button>
+    <button class="btn btn-outline-primary btn-sm me-2" (click)="toggleView('dayGridWeek')">
+      <i class="bi bi-calendar3"></i> Week Calendar
+    </button>
+  </div>
+</div>
+
+<div class="container mt-3">
+  <div class="card shadow-sm p-3">
+    <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
+  </div>
+</div>
+
+<!-- Date Click PopUp -->
+@if(showPopup){
+<app-log-details [dataDetails]="details" (close)="handlePopUp()"></app-log-details>
+}

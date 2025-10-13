@@ -18,13 +18,23 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label text-secondary">Password</label>
-          <input
-            type="password"
-            formControlName="password"
-            class="form-control form-control-lg"
-            placeholder="Enter your Password"
-          />
+          <label for="password" class="form-label text-secondary">Password</label>
+          <div class="input-group">
+            <input
+              [type]="hidePassword ? 'password' : 'text'"
+              id="password"
+              formControlName="password"
+              placeholder="Enter your Password"
+              class="form-control"
+            />
+            <button type="button" class="btn btn-outline-secondary" (click)="togglePassword()">
+              @if(hidePassword){
+              <i class="bi bi-eye-slash"></i>
+              }@else if (!hidePassword) {
+              <i class="bi bi-eye"></i>
+              }
+            </button>
+          </div>
           @if(form.get('password')?.invalid && form.get('password')?.touched){
           <div class="text-danger small mt-1">Password is required</div>
           }
@@ -42,9 +52,7 @@
       <!-- Footer -->
       <p class="text-center text-muted mt-4 mb-0">
         Don't have an account?
-        <a
-          routerLink="/register"
-          class="btn btn-secondary text-decoration-none fw-semibold"
+        <a routerLink="/register" class="btn btn-secondary text-decoration-none fw-semibold"
           >Sign Up</a
         >
       </p>

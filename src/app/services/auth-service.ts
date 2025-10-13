@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -6,16 +6,22 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  private api = 'http://localhost:3000/auth';
+  private baseUrl = 'http://localhost:3000';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private httpClient: HttpClient, private router: Router) {}
 
   login(email: string, password: string) {
-    return this.http.post<{ token: string }>(`${this.api}/login`, { email, password });
+    return this.httpClient.post<{ token: string }>(`${this.baseUrl}/auth/login`, {
+      email,
+      password,
+    });
   }
 
   register(email: string, password: string) {
-    return this.http.post<{ token: string }>(`${this.api}/register`, { email, password });
+    return this.httpClient.post<{ token: string }>(`${this.baseUrl}/auth/register`, {
+      email,
+      password,
+    });
   }
 
   saveToken(token: string) {
@@ -32,10 +38,6 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
-    this.router.navigate(['/login']);
-  }
-
-  getAllUsers(){
-    return this.http.get(`${this.api}/user`);
+    this.router.navigate(['/auth/login']);
   }
 }

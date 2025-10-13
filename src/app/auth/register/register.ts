@@ -50,4 +50,23 @@ export class Register {
       },
     });
   }
+
+  hidePassword = true;
+  hideConfirmPassword = true;
+
+  passwordForm = new FormGroup({
+    password: new FormControl('', [Validators.required, Validators.minLength(5)]),
+  });
+
+  confirmPasswordForm = new FormGroup({
+    confirmPassword: new FormControl('', [Validators.required, Validators.minLength(5)]),
+  });
+
+  togglePassword(): void {
+    this.hidePassword = !this.hidePassword;
+  }
+
+  toggleConfirmPassword(): void {
+    this.hideConfirmPassword = !this.hideConfirmPassword;
+  }
 }

@@ -1,4 +1,4 @@
-<nav
+<header
   style="
     display: flex;
     justify-content: space-between;
@@ -9,10 +9,27 @@
   "
 >
   <h3>Time Tracker Dashboard</h3>
-  <!-- <button (click)="logout()" style="background:white; color:#1976d2; border:none; padding:6px 12px; border-radius:4px;">Logout</button> -->
-</nav>
+  <button
+    (click)="logout()"
+    style="background: white; color: #1976d2; border: none; padding: 6px 12px; border-radius: 4px"
+  >
+    Logout
+  </button>
+</header>
 
-<section style="padding: 20px">
-  <h4>Welcome to Time Tracker</h4>
-  <p>Here you can manage your daily, weekly, and project-based logs.</p>
-</section>
+<div style="display: flex; justify-content: space-around; width: 25%; margin: 20px">
+  <a class="btn btn-outline-warning" style="font-weight: 500" routerLink="/dashboard/log-time"
+    >Log Time</a
+  >
+  <a class="btn btn-outline-warning" style="font-weight: 500" routerLink="/dashboard/daily-log"
+    >Daily Log</a
+  >
+  <a class="btn btn-outline-warning" style="font-weight: 500" routerLink="/dashboard/weekly-log"
+    >Weekly Log</a
+  >
+  <a class="btn btn-outline-warning" style="font-weight: 500" routerLink="/dashboard/calendar"
+    >Calendar</a
+  >
+</div>
+
+<router-outlet></router-outlet>
