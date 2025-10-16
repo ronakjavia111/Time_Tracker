@@ -1,1 +1,78 @@
-<p>log-time works!</p>
+<h3 class="mt-4 text-center text-decoration-underline">Log Time</h3>
+
+<mat-dialog-content class="pt-3">
+  <form [formGroup]="logTimeForm" class="popup-form">
+    <mat-form-field class="w-100 mb-2">
+      <mat-label class="fs-5">Title</mat-label>
+      <input class="fw-bold fs-4" matInput formControlName="title" />
+
+      @if(logTimeForm.get('title')?.touched && logTimeForm.get('title')?.hasError('required')){
+      <mat-error class="mb-1 text-danger">Title is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-2">
+      <mat-label class="fs-5">Select Project</mat-label>
+      <mat-select
+        class="fw-bold fs-4"
+        formControlName="projectName"
+        [(value)]="selectedProject"
+        placeholder="Choose a project"
+      >
+        @for (project of projects; track project.id) {
+        <mat-option [value]="project.id">
+          {{ project.name }}
+        </mat-option>
+        }
+      </mat-select>
+
+      @if(logTimeForm.get('projectName')?.hasError('required')){
+      <mat-error class="mb-1 text-danger">Project Name is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label class="mb-1 fs-5">Date</mat-label>
+      <input matInput [matDatepicker]="picker" class="fw-bold fs-4" formControlName="date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+
+      @if(logTimeForm.get('date')?.touched && logTimeForm.get('date')?.hasError('required')){
+      <mat-error class="mb-1 text-danger">Date is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label class="mb-1 fs-5">Description</mat-label>
+      <textarea matInput formControlName="description" class="fw-bold fs-4"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label class="mb-1 fs-5">Hours</mat-label>
+      <input class="fw-bold fs-4" matInput type="time" formControlName="hours" />
+
+      @if(logTimeForm.get('hours')?.touched && logTimeForm.get('hours')?.hasError('required')){
+      <mat-error class="text-danger">Hours is required</mat-error>}
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label class="mb-1 fs-5">Billable Status</mat-label>
+      <mat-select class="fw-bold fs-4" formControlName="billable">
+        <mat-option value="YES">YES </mat-option>
+        <mat-option value="NO">NO</mat-option>
+      </mat-select>
+
+      @if(logTimeForm.get('billable')?.touched &&
+      logTimeForm.get('billable')?.hasError('required')){
+      <mat-error class="text-danger">Billable Status is required</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="me-2">
+  <button class="cancel-button" (click)="onCancel()">Cancel</button>
+  <button class="submit-button" (click)="onSubmit()" [disabled]="logTimeForm.invalid">
+    Submit
+  </button>
+</mat-dialog-actions>

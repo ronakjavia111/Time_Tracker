@@ -1,9 +1,35 @@
-<div class="popup-overlay" (click)="closePopup()">
-  <div class="popup-content" (click)="$event.stopPropagation()">
-    <h2>Title: {{ title }}</h2>
-    <p>Description: {{ description }}</p>
-    <p>Hours: {{ hours }}</p>
-    <p>Billable: {{ billable }}</p>
-    <button (click)="closePopup()" class="btn btn-outline-danger">Close</button>
-  </div>
+<div class="dialog-container">
+  <h2 mat-dialog-title class="dialog-title">
+    {{ data.title }}
+  </h2>
+
+  <mat-dialog-content class="dialog-content">
+    <div class="detail-row">
+      <span class="label">Project Name:</span>
+      <span class="value">{{ data.project || '—' }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Description:</span>
+      <span class="value">{{ data.description || '—' }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Date:</span>
+      <span class="value">{{ data.date | date : 'mediumDate' }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Hours:</span>
+      <span class="value">{{ data.hours }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Billable:</span>
+      <span class="value" [class.billable]="data.billable" [class.non-billable]="!data.billable">
+        {{ data.billable ? 'Yes' : 'No' }}
+      </span>
+    </div>
+  </mat-dialog-content>
+
+  <hr />
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button color="primary" (click)="closeDialog()">Close</button>
+  </mat-dialog-actions>
 </div>

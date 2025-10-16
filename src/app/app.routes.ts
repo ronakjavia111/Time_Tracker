@@ -3,7 +3,6 @@ import { Login } from './auth/login/login';
 import { authGuard } from './core/guards/auth-guard';
 import { guestGuard } from './core/guards/guest-guard';
 import { LogTime } from './pages/log-time/log-time';
-import { Calendar } from './pages/calendar/calendar.js';
 import { DailyLog } from './pages/daily-log/daily-log';
 import { WeeklyLog } from './pages/weekly-log/weekly-log';
 
@@ -20,14 +19,11 @@ export const routes: Routes = [
     loadComponent: () => import('./dashboard/dashboard.js').then((a) => a.Dashboard),
     canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: 'log-time', pathMatch: 'full' },
-      { path: 'log-time', component: LogTime },
-      { path: 'daily-log', component: DailyLog },
-      { path: 'weekly-log', component: WeeklyLog },
+      { path: '', redirectTo: 'calendar', pathMatch: 'full' },
       {
         path: 'calendar',
-        // loadComponent: () => import('./pages/calendar/calendar.js').then((c) => c.Calendar),
-        component: Calendar,
+        loadComponent: () => import('./pages/calendar/calendar.js').then((c) => c.Calendar),
+        canActivate: [authGuard],
       },
     ],
   },

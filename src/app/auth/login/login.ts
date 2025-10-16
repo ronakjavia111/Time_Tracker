@@ -42,7 +42,7 @@ export class Login {
   });
 
   togglePassword(): void {
-    console.log(this.hidePassword);
+    console.log('Toggle Password: ', this.hidePassword);
 
     this.hidePassword = !this.hidePassword;
   }

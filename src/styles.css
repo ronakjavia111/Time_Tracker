@@ -1,0 +1,60 @@
+/* Event Title */
+.fc-event-title {
+  display: block;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  position: relative;
+  margin: 1px 10px 1px 5px;
+  border-bottom: 2px solid #1c3755;
+  color: #1c3755;
+  font-size: large;
+}
+
+/* Create an inner element that actually scrolls */
+.fc-event-title > span {
+  display: inline-block;
+  min-width: max-content; /* grow only if needed */
+  animation: scroll-text 5s linear infinite;
+  animation-delay: 1s;
+}
+
+/* Define smooth scrolling animation */
+@keyframes scroll-text {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pause animation on hover */
+.fc-event-title:hover > span {
+  animation-play-state: paused;
+}
+
+/* Date Picker */
+.cdk-overlay-container,
+.cdk-overlay-pane {
+  z-index: 10000 !important;
+  opacity: 1 !important;
+}
+
+.mat-datepicker-content,
+.mat-calendar {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+#mat-select-0-panel,
+#mat-select-1-panel {
+  background-color: #ffffff;
+  color: #000;
+}
+
+/* Blur backdrop for dialogs using custom backdropClass */
+/* Apply blur to background overlay */
+.blurred-backdrop {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(6px) !important;
+}

@@ -5,7 +5,7 @@
     align-items: center;
     background: #1976d2;
     color: white;
-    padding: 10px;
+    padding: 10px 20px;
   "
 >
   <h3>Time Tracker Dashboard</h3>
@@ -17,18 +17,30 @@
   </button>
 </header>
 
-<div style="display: flex; justify-content: space-around; width: 25%; margin: 20px">
-  <a class="btn btn-outline-warning" style="font-weight: 500" routerLink="/dashboard/log-time"
+<div style="display: flex; justify-content: space-around; width: fit-content; margin: 20px">
+  <a
+    class="btn btn-outline-warning"
+    style="font-weight: 500; margin-bottom: auto"
+    routerLink="/dashboard/calendar"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    >Calendar</a
+  >
+  <a
+    class="btn btn-outline-warning"
+    style="font-weight: 500; margin: 0px 10px"
+    (click)="openLogTime()"
     >Log Time</a
   >
-  <a class="btn btn-outline-warning" style="font-weight: 500" routerLink="/dashboard/daily-log"
+  <a
+    class="btn btn-outline-warning"
+    style="font-weight: 500"
     >Daily Log</a
   >
-  <a class="btn btn-outline-warning" style="font-weight: 500" routerLink="/dashboard/weekly-log"
+  <a
+    class="btn btn-outline-warning"
+    style="font-weight: 500; margin-left: 10px"
     >Weekly Log</a
-  >
-  <a class="btn btn-outline-warning" style="font-weight: 500" routerLink="/dashboard/calendar"
-    >Calendar</a
   >
 </div>
 

@@ -9388,40 +9388,6 @@ var Calendar = class extends CalendarImpl {
     applyStyleProp(this.el, "height", height);
   }
 };
-function formatDate(dateInput, options = {}) {
-  let dateEnv = buildDateEnv(options);
-  let formatter = createFormatter(options);
-  let dateMeta = dateEnv.createMarkerMeta(dateInput);
-  if (!dateMeta) {
-    return "";
-  }
-  return dateEnv.format(dateMeta.marker, formatter, {
-    forcedTzo: dateMeta.forcedTzo
-  });
-}
-function formatRange(startInput, endInput, options) {
-  let dateEnv = buildDateEnv(typeof options === "object" && options ? options : {});
-  let formatter = createFormatter(options);
-  let startMeta = dateEnv.createMarkerMeta(startInput);
-  let endMeta = dateEnv.createMarkerMeta(endInput);
-  if (!startMeta || !endMeta) {
-    return "";
-  }
-  return dateEnv.formatRange(startMeta.marker, endMeta.marker, formatter, {
-    forcedStartTzo: startMeta.forcedTzo,
-    forcedEndTzo: endMeta.forcedTzo,
-    isEndExclusive: options.isEndExclusive,
-    defaultSeparator: BASE_OPTION_DEFAULTS.defaultRangeSeparator
-  });
-}
-function buildDateEnv(settings) {
-  let locale = buildLocale(settings.locale || "en", organizeRawLocales([]).map);
-  return new DateEnv(Object.assign(Object.assign({ timeZone: BASE_OPTION_DEFAULTS.timeZone, calendarSystem: "gregory" }, settings), { locale }));
-}
-function sliceEvents(props, allDay) {
-  return sliceEventStore(props.eventStore, props.eventUiBases, props.dateProfile.activeRange, allDay ? props.nextDayThreshold : null).fg;
-}
-var version = "6.1.19";
 
 export {
   y,
@@ -9495,7 +9461,6 @@ export {
   buildEventRangeKey,
   getSegAnchorAttrs,
   isDateSpansEqual,
-  JsonRequestError,
   Interaction,
   interactionSettingsToStore,
   interactionSettingsStore,
@@ -9549,13 +9514,7 @@ export {
   MoreLinkContainer,
   computeEarliestSegStart,
   CustomRenderingStore,
-  globalLocales,
   createPlugin,
-  globalPlugins,
-  Calendar,
-  formatDate,
-  formatRange,
-  sliceEvents,
-  version
+  Calendar
 };
-//# sourceMappingURL=chunk-6XB4UH2B.js.map
+//# sourceMappingURL=chunk-ZI2LOPFC.js.map

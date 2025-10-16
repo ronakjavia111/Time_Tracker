@@ -1,6 +1,7 @@
 export interface Log {
-  projectId: number;
   userId: number;
+  projectId: number;
+  projectName: string;
   title: string;
   description: string;
   date: Date;

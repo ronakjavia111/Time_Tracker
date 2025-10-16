@@ -1,10 +1,9 @@
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h5>Time Logs</h5>
+<div class="d-flex justify-content-end align-items-center mb-3">
   <div>
-    <button class="btn btn-outline-primary btn-sm me-2" (click)="toggleView('dayGridMonth')">
+    <button id="month" class="btn btn-outline-primary btn-sm me-2" [class.active]="selectedView === 'dayGridMonth'" (click)="toggleView('dayGridMonth')">
       <i class="bi bi-calendar3"></i> Month Calendar
     </button>
-    <button class="btn btn-outline-primary btn-sm me-2" (click)="toggleView('dayGridWeek')">
+    <button id="week" class="btn btn-outline-primary btn-sm me-2" [class.active]="selectedView === 'dayGridWeek'" (click)="toggleView('dayGridWeek')">
       <i class="bi bi-calendar3"></i> Week Calendar
     </button>
   </div>
@@ -15,8 +14,3 @@
     <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
   </div>
 </div>
-
-<!-- Date Click PopUp -->
-@if(showPopup){
-<app-log-details [dataDetails]="details" (close)="handlePopUp()"></app-log-details>
-}

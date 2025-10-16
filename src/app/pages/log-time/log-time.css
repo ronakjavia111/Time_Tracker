@@ -1,0 +1,30 @@
+.cancel-button {
+  background-color: #283628;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: bold;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+  border: 2px solid;
+  margin-right: 10px;
+}
+
+.cancel-button:hover {
+  background-color: #6f7470;
+}
+
+.submit-button {
+  background-color: #4caf50;
+  color: white;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: bold;
+  box-shadow: 2px 2px 6px #0000004d;
+  border: 2px solid;
+}
+
+.submit-button:hover {
+  background-color: #508652;
+}
+
+

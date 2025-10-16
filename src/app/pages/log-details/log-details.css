@@ -1,20 +1,68 @@
 /* event-details-popup.component.css */
-.popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+.dialog-container {
+  min-width: 350px;
+  max-width: 450px;
+  padding: 10px;
+  background: #fafafa;
+  border-radius: 12px;
+  margin-top: 15px;
+}
+
+.dialog-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #c62828;
+  border: 3px solid black;
+  border-radius: 7px;
+  padding-bottom: 8px;
+  width: fit-content;
+  padding: 4px 20px 7px;
+  margin: auto;
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+  margin-top: 10px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:last-child {
+    border-bottom: none;
   }
-  
-  .popup-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  .label {
+    font-weight: 500;
+    color: #555;
   }
+
+  .value {
+    font-weight: 400;
+    color: #222;
+  }
+
+  .billable {
+    color: #2e7d32;
+    font-weight: 600;
+  }
+
+  .non-billable {
+    color: #c62828;
+    font-weight: 600;
+  }
+}
+
+mat-dialog-actions button {
+  border: 3px solid #000;
+  border-radius: 8px;
+  padding: 5px 10px;
+  color: #000;
+  font-weight: 500;
+  background-color: #ffffff;
+}

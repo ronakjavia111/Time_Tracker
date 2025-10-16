@@ -1,21 +1,26 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogContent,
+  MatDialogActions,
+} from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { Calendar } from '../calendar/calendar';
 
 @Component({
   selector: 'app-log-details',
-  imports: [],
+  imports: [MatDialogContent, MatDialogActions, CommonModule],
   templateUrl: './log-details.html',
   styleUrl: './log-details.css',
 })
 export class LogDetails {
-  @Input() dataDetails: any = null;
-  @Output() close = new EventEmitter();
+  constructor(
+    public dialogRef: MatDialogRef<Calendar>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
 
-  title = this.dataDetails?.title;
-  description = this.dataDetails?.description;
-  hours = this.dataDetails?.hours;
-  billable = this.dataDetails?.billable;
-
-  closePopup() {
-    this.close.emit();
+  closeDialog(): void {
+    this.dialogRef.close();
   }
 }

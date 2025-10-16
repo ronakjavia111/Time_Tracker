@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGrid from '@fullcalendar/daygrid';
 import timeGrid from '@fullcalendar/timegrid';
@@ -9,70 +9,88 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth-service';
 import { TimeLogService } from '../../services/time-log-service';
 import { forkJoin } from 'rxjs';
-import { Log } from '../../interfaces/log';
 import { LogDetails } from '../log-details/log-details';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-calendar',
-  imports: [FullCalendarModule, CommonModule, LogDetails],
+  standalone: true,
+  imports: [FullCalendarModule, CommonModule, MatDialogModule],
   templateUrl: './calendar.html',
   styleUrl: './calendar.css',
 })
-export class Calendar {
-  constructor(private auth: AuthService, private timeLogs: TimeLogService) {}
+export class Calendar implements OnInit {
+  constructor(
+    private auth: AuthService,
+    private timeLogs: TimeLogService,
+    private dialog: MatDialog
+  ) {}
 
-  userId: number = 0;
+  userId: number | null = 0;
+  selectedView: 'dayGridMonth' | 'dayGridWeek' = 'dayGridMonth';
 
   ngOnInit() {
+    this.userId = this.auth.getUserId();
     this.loadData();
-    this.userId = this.fetchUserIdFromToken();
-  }
-
-  fetchUserIdFromToken(): number {
-    const token = this.auth.getToken();
-    if (!token) return 0;
-
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.id || 0;
-    } catch (error) {
-      console.error('Error decoding token:', error);
-      return 0;
-    }
   }
 
   loadData() {
     forkJoin({
       timeLogs: this.timeLogs.getAllTimeLogs(),
+      projects: this.timeLogs.getAllProjects(),
     }).subscribe({
       next: (res: any) => {
-        console.log('userid', this.userId);
-        this.logs = res.timeLogs
-          .filter((x: Log) => x.userId === this.userId)
+        const { timeLogs, projects } = res;
+
+        if (!timeLogs || !Array.isArray(timeLogs)) {
+          console.error('Invalid TimeLogs data:', timeLogs);
+          return;
+        }
+
+        if (!projects || !Array.isArray(projects)) {
+          console.error('Invalid Projects data:', projects);
+          return;
+        }
+
+        const project = new Map(projects.map((p: any) => [p.id, p.name]));
+
+        this.logs = timeLogs
+          .filter((x: any) => x.userId === this.userId)
           .map((item: any) => {
+            const projectName = project.get(item.projectId) || 'Unknown Project';
+
             return {
               userId: item.userId,
               projectId: item.projectId,
-              title: item.title,
+              projectName: projectName,
+              title: item.title || 'Untitled',
               description: item.description,
-              date: item.date,
+              date: new Date(item.date).toISOString(),
               hours: item.hours,
               billable: item.billable,
             };
           });
-        console.log('Data:', this.logs);
 
-        this.calendarComponent.getApi().setOption('events', this.logs);
+        if (this.calendarComponent && this.calendarComponent.getApi()) {
+          this.calendarComponent.getApi().setOption('events', this.logs);
+        } else {
+          console.error('Calendar component not available');
+        }
       },
-      error: (err) => console.error('Error fetching data', err),
+      error: (err) => {
+        console.error('Error fetching data:', err);
+
+        if (this.calendarComponent && this.calendarComponent.getApi()) {
+          this.calendarComponent.getApi().setOption('events', []);
+        }
+      },
     });
   }
 
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
 
-  logs: Log[] = [];
+  logs: any[] = [];
   calendarView: 'dayGridMonth' | 'dayGridWeek' = 'dayGridMonth';
-  showPopup: boolean = false;
   details: any;
 
   calendarOptions: CalendarOptions = {
@@ -83,8 +101,10 @@ export class Calendar {
       center: 'title',
       right: 'dayGridMonth listMonth',
     },
+    displayEventTime: false,
+    events: [],
+    eventClick: (data) => this.handleDateClick(data),
     fixedWeekCount: false,
-    dateClick: (data) => this.handleDateClick(data),
     buttonText: {
       today: 'Today',
       month: 'Month View',
@@ -92,9 +112,21 @@ export class Calendar {
       listWeek: 'Week Logs',
       listMonth: 'Month Logs',
     },
-    events: this.logs,
+    eventDidMount: (info) => {
+      const eventTitle = info.el.querySelector('.fc-event-title');
+
+      if (eventTitle && !eventTitle.querySelector('span')) {
+        const text = eventTitle.textContent;
+        eventTitle.textContent = '';
+
+        const span = document.createElement('span');
+        span.textContent = text;
+        eventTitle.appendChild(span);
+      }
+    },
     selectable: true,
     editable: true,
+    height: 'auto',
   };
 
   toggleView(view: 'dayGridMonth' | 'dayGridWeek') {
@@ -105,22 +137,24 @@ export class Calendar {
     calendar.setOption('headerToolbar', {
       right: view === 'dayGridWeek' ? 'dayGridWeek listWeek' : 'dayGridMonth listMonth',
     });
+    this.selectedView = view;
   }
 
-  handleDateClick(data: any) {
-    console.log('Clicked');
+  handleDateClick(info: any) {
+    const event = info.event;
 
-    this.details = {
-      title: data.title,
-      description: data.description,
-      hours: data.hours,
-      billable: data.billable,
+    const details = {
+      title: event.title,
+      project: event.extendedProps.projectName,
+      description: event.extendedProps?.description,
+      date: event.startStr,
+      hours: event.extendedProps?.hours,
+      billable: event.extendedProps?.billable,
     };
 
-    this.showPopup = true;
-  }
-
-  handlePopUp() {
-    this.showPopup = false;
+    this.dialog.open(LogDetails, {
+      width: '400px',
+      data: details,
+    });
   }
 }
