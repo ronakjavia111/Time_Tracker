@@ -4,14 +4,14 @@ import {
   supportsScrollBehavior
 } from "./chunk-5EG33CFQ.js";
 import {
-  BidiModule,
-  Directionality
-} from "./chunk-IW6PTBYS.js";
-import {
   Platform,
   coerceElement,
   coerceNumberProperty
-} from "./chunk-622MBBWU.js";
+} from "./chunk-46642JRE.js";
+import {
+  BidiModule,
+  Directionality
+} from "./chunk-IW6PTBYS.js";
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -1689,6 +1689,11 @@ var ScrollingModule = class _ScrollingModule {
 })();
 
 export {
+  DataSource,
+  isDataSource,
+  _ViewRepeaterOperation,
+  _VIEW_REPEATER_STRATEGY,
+  _RecycleViewRepeaterStrategy,
   VIRTUAL_SCROLL_STRATEGY,
   FixedSizeVirtualScrollStrategy,
   _fixedSizeVirtualScrollStrategyFactory,
@@ -1707,4 +1712,4 @@ export {
   CdkScrollableModule,
   ScrollingModule
 };
-//# sourceMappingURL=chunk-MYWQPLQN.js.map
+//# sourceMappingURL=chunk-CMZFDIIX.js.map

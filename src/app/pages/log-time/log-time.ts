@@ -49,7 +49,9 @@ export class LogTime implements OnInit {
   }
 
   ngOnInit() {
-    this.fetchAllProjects();
+    this.timeLog.fetchAllProjects().subscribe((records: Project[]) => {
+      this.projects = records;
+    });
   }
 
   onSubmit() {
@@ -80,21 +82,5 @@ export class LogTime implements OnInit {
 
   onCancel() {
     this.dialogRef.close();
-  }
-
-  fetchAllProjects() {
-    this.timeLog.getAllProjects().subscribe({
-      next: (data) => {
-        if (!data || !Array.isArray(data)) {
-          console.error('Invalid Projects data:', data);
-          return;
-        }
-
-        this.projects = data.filter((x: any) => x.userId === this.auth.getUserId());
-      },
-      error: (err) => {
-        console.error('Failed to Fetch Projects: ', err);
-      },
-    });
   }
 }

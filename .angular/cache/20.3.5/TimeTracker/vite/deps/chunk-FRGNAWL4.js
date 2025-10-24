@@ -2,16 +2,18 @@ import {
   MatRipple,
   MatRippleModule,
   _StructuralStylesLoader
-} from "./chunk-TSEVMAG6.js";
+} from "./chunk-YZGBJE4C.js";
+import {
+  _animationsDisabled
+} from "./chunk-CVY22TTY.js";
 import {
   ENTER,
   MatCommonModule,
   SPACE,
   _IdGenerator,
   _VisuallyHiddenLoader,
-  _animationsDisabled,
   hasModifierKey
-} from "./chunk-MYFYOO7R.js";
+} from "./chunk-R24CQMJT.js";
 import {
   _CdkPrivateStyleLoader
 } from "./chunk-NM4WI7EN.js";
@@ -696,4 +698,4 @@ export {
   _getOptionScrollPosition,
   MatOptionModule
 };
-//# sourceMappingURL=chunk-HSWODP7I.js.map
+//# sourceMappingURL=chunk-FRGNAWL4.js.map

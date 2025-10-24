@@ -1,14 +1,18 @@
 import {
-  _IdGenerator,
-  _animationsDisabled,
+  _animationsDisabled
+} from "./chunk-CVY22TTY.js";
+import {
   coerceBooleanProperty
-} from "./chunk-MYFYOO7R.js";
+} from "./chunk-GWFLKVBH.js";
+import {
+  _IdGenerator
+} from "./chunk-R24CQMJT.js";
+import {
+  Platform
+} from "./chunk-46642JRE.js";
 import {
   Directionality
 } from "./chunk-IW6PTBYS.js";
-import {
-  Platform
-} from "./chunk-622MBBWU.js";
 import {
   NgTemplateOutlet
 } from "./chunk-LMFWKNMP.js";
@@ -1646,4 +1650,4 @@ export {
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
   MatFormField
 };
-//# sourceMappingURL=chunk-KFBCZ25H.js.map
+//# sourceMappingURL=chunk-DID7E5W2.js.map

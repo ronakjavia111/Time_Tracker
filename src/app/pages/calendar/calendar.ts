@@ -14,7 +14,6 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-calendar',
-  standalone: true,
   imports: [FullCalendarModule, CommonModule, MatDialogModule],
   templateUrl: './calendar.html',
   styleUrl: './calendar.css',
@@ -25,6 +24,8 @@ export class Calendar implements OnInit {
     private timeLogs: TimeLogService,
     private dialog: MatDialog
   ) {}
+
+  @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
 
   userId: number | null = 0;
   selectedView: 'dayGridMonth' | 'dayGridWeek' = 'dayGridMonth';
@@ -86,8 +87,6 @@ export class Calendar implements OnInit {
       },
     });
   }
-
-  @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
 
   logs: any[] = [];
   calendarView: 'dayGridMonth' | 'dayGridWeek' = 'dayGridMonth';
