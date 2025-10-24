@@ -71,8 +71,8 @@ export class LogTime implements OnInit {
         next: () => {
           this.dialogRef?.close(payload);
         },
-        error: (err) => {
-          console.error('Failed to add time log:', err);
+        error: () => {
+          alert(`Failed to add daily log: ${payload.title}`);
         },
       });
     } else {

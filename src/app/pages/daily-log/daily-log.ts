@@ -1,23 +1,47 @@
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatOption, MatSelect } from '@angular/material/select';
+import { MatOption, MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { TimeLogService } from '../../services/time-log-service';
 import { Project } from '../../interfaces/project';
+import { AuthService } from '../../services/auth-service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-daily-log',
-  imports: [MatTableModule, MatPaginatorModule, MatOption, MatSelect, FormsModule, MatIconModule],
+  imports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatOption,
+    MatSelectModule,
+    FormsModule,
+    MatIconModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './daily-log.html',
   styleUrl: './daily-log.css',
 })
 export class DailyLog implements OnInit {
   logTimeForm: FormGroup;
-  projects: any[] = [];
+  projectLists: any[] = [];
+  projectRows: any[] = [];
 
-  constructor(private timeLog: TimeLogService, private fb: FormBuilder) {
+  constructor(
+    private timeLog: TimeLogService,
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private dialogRef: MatDialogRef<DailyLog>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
     this.logTimeForm = this.fb.group({
       logs: this.fb.array([]),
     });
@@ -25,8 +49,10 @@ export class DailyLog implements OnInit {
 
   ngOnInit() {
     this.timeLog.fetchAllProjects().subscribe((records: Project[]) => {
-      this.projects = records;
+      this.projectLists = records;
     });
+
+    this.addRow();
   }
 
   get logs(): FormArray {
@@ -42,7 +68,7 @@ export class DailyLog implements OnInit {
       billable: ['', Validators.required],
     });
 
-    this.projects = [...this.projects, row];
+    this.projectRows = [...this.projectRows, row];
   }
 
   displayedColumns: string[] = [
@@ -55,15 +81,75 @@ export class DailyLog implements OnInit {
   ];
 
   removeRow(index: number) {
-    this.projects.splice(index, 1);
-    this.projects = [...this.projects];
+    this.projectRows.splice(index, 1);
+    this.projectRows = [...this.projectRows];
   }
 
   resetTable() {
-    this.projects = [];
+    this.projectRows = [];
+    this.addRow();
   }
 
   submitTable() {
-    console.log('Submitted Data:', this.projects);
+    if (!this.validateRows()) {
+      alert('Please fix errors before saving.');
+      return;
+    }
+
+    this.projectRows.forEach((project) => {
+      const payload = {
+        userId: this.auth.getUserId(),
+        projectId: project.projectName,
+        title: project.title,
+        description: project.description || '',
+        date: new Date().toISOString(),
+        hours: project.hours,
+        billable: String(project.billable).toUpperCase() === 'YES',
+      };
+
+      this.timeLog.addLogTime(payload).subscribe({
+        next: () => {
+          this.dialogRef?.close(payload);
+        },
+        error: () => {
+          alert(`Failed to add daily log: ${payload.title}`);
+        },
+      });
+    });
+  }
+
+  validateRows(): boolean {
+    let isValid = true;
+
+    this.projectRows.forEach((row: any, index: number) => {
+      row.errors = {};
+
+      if (!row.title || row.title.trim() === '') {
+        row.errors.title = 'Title is required';
+        isValid = false;
+      }
+
+      if (!row.projectName) {
+        row.errors.projectName = 'Project is required';
+        isValid = false;
+      }
+
+      if (!row.hours) {
+        row.errors.hours = 'Hours is required';
+        isValid = false;
+      }
+
+      if (row.hours <= 0) {
+        row.errors.hours = 'Enter valid hours';
+        isValid = false;
+      }
+
+      if (!row.billable) {
+        row.errors.billable = 'Billable is required';
+        isValid = false;
+      }
+    });
+
+    return isValid;
   }
 }

@@ -57,35 +57,36 @@
     gap: 4px;
 
     button {
-      min-width: 75px;
-      font-size: 13px;
-      height: 34px;
-      font-weight: 500;
+      min-width: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 14px;
+      text-transform: uppercase;
       border: none;
       border-radius: 6px;
     }
-    
+
     button[color='danger'] {
-        background-color: #ff0000;
-        color: white;
-        
-        &:hover {
-            background-color: #700000;
-        }
+      background-color: #ff0000;
+      color: white;
+
+      &:hover {
+        background-color: #ba0000;
+      }
     }
-}
+  }
 }
 
 /* Buttons below table */
 .action-buttons-row {
-    button {
-        min-width: 100px;
-        font-size: 14px;
-        font-weight: 600;
-        padding: 6px 14px;
-        text-transform: uppercase;
-        border: none;
-        border-radius: 6px;
+  button {
+    min-width: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 14px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 6px;
   }
 
   button[color='warn'] {
@@ -123,4 +124,15 @@
       background-color: #757575;
     }
   }
+}
+
+.input-error {
+  border: 1px solid red !important;
+  background-color: #ffe6e6 !important;
+}
+
+.error-msg {
+  color: red;
+  font-size: 12px;
+  margin-top: 2px;
 }
