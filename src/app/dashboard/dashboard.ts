@@ -4,6 +4,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { LogTime } from '../pages/log-time/log-time';
 import { DailyLog } from '../pages/daily-log/daily-log';
+import { WeeklyLog } from '../pages/weekly-log/weekly-log';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,6 +24,7 @@ export class Dashboard {
     this.dialog.open(LogTime, {
       panelClass: 'blur-dialog-container',
       backdropClass: 'blurred-backdrop',
+      disableClose: true,
     });
   }
 
@@ -33,6 +35,18 @@ export class Dashboard {
       height: 'auto',
       panelClass: 'blur-dialog-container',
       backdropClass: 'blurred-backdrop',
+      disableClose: true,
+    });
+  }
+
+  openWeeklyLog() {
+    this.dialog.open(WeeklyLog, {
+      width: '90vw',
+      maxWidth: '1200px',
+      height: 'auto',
+      panelClass: 'blur-dialog-container',
+      backdropClass: 'blurred-backdrop',
+      disableClose: true,
     });
   }
 }

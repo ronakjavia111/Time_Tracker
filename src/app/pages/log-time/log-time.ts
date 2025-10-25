@@ -80,7 +80,7 @@ export class LogTime implements OnInit {
     }
   }
 
-  onCancel() {
+  onClose() {
     this.dialogRef.close();
   }
 }

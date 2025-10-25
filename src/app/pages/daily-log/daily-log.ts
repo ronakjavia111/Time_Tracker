@@ -118,6 +118,10 @@ export class DailyLog implements OnInit {
     });
   }
 
+  onClose() {
+    this.dialogRef.close();
+  }
+
   validateRows(): boolean {
     let isValid = true;
 
