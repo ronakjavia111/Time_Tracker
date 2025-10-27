@@ -3,7 +3,7 @@
 <h2 class="mt-3 text-center daily-log-title">Weekly Log</h2>
 
 <div class="mat-elevation-z8 daily-log-table pb-4 pr-4">
-  <table mat-table [dataSource]="weeklyRows" class="w-100">
+  <table mat-table [dataSource]="rows" class="w-100">
     <!-- Title Column -->
     <ng-container matColumnDef="title">
       <th mat-header-cell *matHeaderCellDef class="text-center">Title</th>
@@ -32,7 +32,7 @@
           class="cell-select"
           [class.input-error]="row.errors?.projectName"
         >
-          @for (project of weeklyRows; track $index) {
+          @for (project of rows; track $index) {
           <mat-option [value]="project.id">{{ project.name }}</mat-option
           >}
         </mat-select>
