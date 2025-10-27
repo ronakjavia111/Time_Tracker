@@ -8,9 +8,12 @@ import {
 } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { TimeLogService } from '../../services/time-log-service';
+import { AuthService } from '../../services/auth-service';
+import { Project } from '../../interfaces/project';
 
 @Component({
   selector: 'app-weekly-log',
@@ -29,8 +32,22 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrl: './weekly-log.css',
 })
 export class WeeklyLog implements OnInit {
-  constructor(private dialogRef: MatDialogRef<WeeklyLog>, @Inject(MAT_DIALOG_DATA) data: any) {}
+  rows: any[] = [];
+  weeklyLists: any[] = [];
+  projectLists: any[] = [];
+
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private dialogRef: MatDialogRef<WeeklyLog>,
+    @Inject(MAT_DIALOG_DATA) data: any,
+    private timeLog: TimeLogService
+  ) {}
   ngOnInit(): void {
+    this.timeLog.fetchAllProjects().subscribe((projects: Project[]) => {
+      this.projectLists = projects;
+    });
+
     this.addRow();
   }
 
@@ -43,9 +60,6 @@ export class WeeklyLog implements OnInit {
     { key: 'sat', label: 'Sat' },
     { key: 'sun', label: 'Sun' },
   ];
-
-  weeklyRows: any[] = [];
-  weeklyLists: any[] = [];
 
   displayedColumns = [
     'title',
@@ -67,12 +81,12 @@ export class WeeklyLog implements OnInit {
       errors: {},
     };
 
-    this.weeklyRows = [...this.weeklyRows, newRow];
+    this.rows = [...this.rows, newRow];
   }
 
   removeRow(index: number) {
-    this.weeklyRows.splice(index, 1);
-    this.weeklyRows = [...this.weeklyRows];
+    this.rows.splice(index, 1);
+    this.rows = [...this.rows];
   }
 
   // Total hours for a single row (weekly)
@@ -87,7 +101,7 @@ export class WeeklyLog implements OnInit {
 
   // Total hours for a single day across all rows
   getDayTotal(dayKey: string): number {
-    return this.weeklyRows.reduce((sum, row) => {
+    return this.rows.reduce((sum, row) => {
       const h = row.hours[dayKey];
       return sum + (h ? this.timeToDecimal(h) : 0);
     }, 0);
@@ -102,7 +116,7 @@ export class WeeklyLog implements OnInit {
 
   // ResetTable
   resetTable() {
-    this.weeklyRows = [];
+    this.rows = [];
     this.addRow();
   }
   submitTable() {}

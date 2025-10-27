@@ -33,7 +33,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class DailyLog implements OnInit {
   logTimeForm: FormGroup;
   projectLists: any[] = [];
-  projectRows: any[] = [];
+  rows: any[] = [];
 
   constructor(
     private timeLog: TimeLogService,
@@ -68,7 +68,7 @@ export class DailyLog implements OnInit {
       billable: ['', Validators.required],
     });
 
-    this.projectRows = [...this.projectRows, row];
+    this.rows = [...this.rows, row];
   }
 
   displayedColumns: string[] = [
@@ -81,12 +81,12 @@ export class DailyLog implements OnInit {
   ];
 
   removeRow(index: number) {
-    this.projectRows.splice(index, 1);
-    this.projectRows = [...this.projectRows];
+    this.rows.splice(index, 1);
+    this.rows = [...this.rows];
   }
 
   resetTable() {
-    this.projectRows = [];
+    this.rows = [];
     this.addRow();
   }
 
@@ -96,7 +96,7 @@ export class DailyLog implements OnInit {
       return;
     }
 
-    this.projectRows.forEach((project) => {
+    this.rows.forEach((project) => {
       const payload = {
         userId: this.auth.getUserId(),
         projectId: project.projectName,
@@ -125,7 +125,7 @@ export class DailyLog implements OnInit {
   validateRows(): boolean {
     let isValid = true;
 
-    this.projectRows.forEach((row: any, index: number) => {
+    this.rows.forEach((row: any) => {
       row.errors = {};
 
       if (!row.title || row.title.trim() === '') {
