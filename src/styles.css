@@ -59,7 +59,6 @@
   backdrop-filter: blur(6px) !important;
 }
 
-
 /* Title */
 .daily-log-title {
   color: #1976d2; /* Blue color */
@@ -88,6 +87,7 @@
       text-align: center;
       vertical-align: middle;
       border-bottom: 1px solid #ccc;
+      
     }
 
     .mat-row-hover:hover {
@@ -104,10 +104,11 @@
     padding: 6px 10px;
     border-radius: 4px;
     border: 1px solid #b0bec5;
+    margin-top: 15px;
   }
 
-  #title {
-    padding: 6px 50px;
+  .input {
+    margin-right: 80px;
   }
 
   .textarea-input {
@@ -191,7 +192,9 @@
 .error-msg {
   color: red;
   font-size: 12px;
-  margin-top: 2px;
+  padding-top: 5px;
+  text-wrap: nowrap;
+   margin-bottom: 13px;
 }
 
 .action-buttons {
@@ -234,4 +237,17 @@ button[color='secondary'] {
   &:hover {
     background-color: #757575;
   }
+}
+
+.week-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.week-navigation button {
+  color: #3f51b5;
+  border: 2px solid #000;
+  border-radius: 100%;
 }

@@ -96,15 +96,15 @@ export class DailyLog implements OnInit {
       return;
     }
 
-    this.rows.forEach((project) => {
+    this.rows.forEach((record) => {
       const payload = {
         userId: this.auth.getUserId(),
-        projectId: project.projectName,
-        title: project.title,
-        description: project.description || '',
-        date: new Date().toISOString(),
-        hours: project.hours,
-        billable: String(project.billable).toUpperCase() === 'YES',
+        projectId: record.projectName,
+        title: record.title,
+        description: record.description || '',
+        date: new Date().toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }),
+        hours: record.hours,
+        billable: String(record.billable).toUpperCase() === 'YES',
       };
 
       this.timeLog.addLogTime(payload).subscribe({
