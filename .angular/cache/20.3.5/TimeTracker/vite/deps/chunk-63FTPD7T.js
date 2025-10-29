@@ -1,6 +1,6 @@
 import {
   MediaMatcher
-} from "./chunk-R24CQMJT.js";
+} from "./chunk-52ZI7FNQ.js";
 import {
   ANIMATION_MODULE_TYPE,
   InjectionToken,
@@ -9,7 +9,7 @@ import {
   setClassMetadata,
   ɵɵdefineInjector,
   ɵɵdefineNgModule
-} from "./chunk-PVCVI5HS.js";
+} from "./chunk-IRU7WGMS.js";
 
 // node_modules/@angular/cdk/fesm2022/layout.mjs
 var LayoutModule = class _LayoutModule {
@@ -65,11 +65,11 @@ function _isTestEnvironment() {
 }
 
 export {
+  _isTestEnvironment,
   MATERIAL_ANIMATIONS,
   AnimationCurves,
   AnimationDurations,
   _getAnimationsState,
-  _animationsDisabled,
-  _isTestEnvironment
+  _animationsDisabled
 };
-//# sourceMappingURL=chunk-CVY22TTY.js.map
+//# sourceMappingURL=chunk-63FTPD7T.js.map

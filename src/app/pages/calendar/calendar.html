@@ -1,9 +1,19 @@
 <div class="d-flex justify-content-end align-items-center mb-3">
   <div>
-    <button id="month" class="btn btn-outline-primary btn-sm me-2" [class.active]="selectedView === 'dayGridMonth'" (click)="toggleView('dayGridMonth')">
+    <button
+      id="month"
+      class="btn btn-outline-primary btn-sm me-2"
+      [class.active]="selectedView === 'dayGridMonth'"
+      (click)="toggleView('dayGridMonth')"
+    >
       <i class="bi bi-calendar3"></i> Month Calendar
     </button>
-    <button id="week" class="btn btn-outline-primary btn-sm me-2" [class.active]="selectedView === 'dayGridWeek'" (click)="toggleView('dayGridWeek')">
+    <button
+      id="week"
+      class="btn btn-outline-primary btn-sm me-2"
+      [class.active]="selectedView === 'dayGridWeek'"
+      (click)="toggleView('dayGridWeek')"
+    >
       <i class="bi bi-calendar3"></i> Week Calendar
     </button>
   </div>
@@ -14,3 +24,4 @@
     <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
   </div>
 </div>
+<ng-toast></ng-toast>

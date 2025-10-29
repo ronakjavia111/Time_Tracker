@@ -15,6 +15,7 @@ import { TimeLogService } from '../../services/time-log-service';
 import { Project } from '../../interfaces/project';
 import { AuthService } from '../../services/auth-service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-daily-log',
@@ -40,6 +41,7 @@ export class DailyLog implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private dialogRef: MatDialogRef<DailyLog>,
+    private toast:NgToastService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.logTimeForm = this.fb.group({
@@ -92,7 +94,7 @@ export class DailyLog implements OnInit {
 
   submitTable() {
     if (!this.validateRows()) {
-      alert('Please fix errors before saving.');
+      this.toast.danger('Please fix errors before saving.');
       return;
     }
 
@@ -102,17 +104,21 @@ export class DailyLog implements OnInit {
         projectId: record.projectName,
         title: record.title,
         description: record.description || '',
-        date: new Date().toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }),
+        date: new Date().toDateString(),
         hours: record.hours,
         billable: String(record.billable).toUpperCase() === 'YES',
       };
 
       this.timeLog.addLogTime(payload).subscribe({
-        next: () => {
+        next: (data:any) => {
+          console.log(data);
+          console.log(payload);
+          
+          this.rows = [this.rows, payload];
           this.dialogRef?.close(payload);
         },
         error: () => {
-          alert(`Failed to add daily log: ${payload.title}`);
+          this.toast.danger(`Failed to add daily log: ${payload.title}`);
         },
       });
     });

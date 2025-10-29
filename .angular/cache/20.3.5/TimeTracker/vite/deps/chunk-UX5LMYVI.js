@@ -2,7 +2,7 @@ import {
   InjectionToken,
   LOCALE_ID,
   inject
-} from "./chunk-PVCVI5HS.js";
+} from "./chunk-IRU7WGMS.js";
 import {
   Subject
 } from "./chunk-RSS3ODKE.js";
@@ -187,4 +187,4 @@ export {
   DateAdapter,
   MAT_DATE_FORMATS
 };
-//# sourceMappingURL=chunk-UFPTGAZZ.js.map
+//# sourceMappingURL=chunk-UX5LMYVI.js.map

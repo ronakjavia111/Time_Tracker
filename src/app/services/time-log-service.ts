@@ -33,6 +33,10 @@ export class TimeLogService {
     return this.httpClient.post<any>(`${this.baseUrl}/timelogs`, payload);
   }
 
+  deleteLogTime(id: any) {
+    return this.httpClient.delete<any>(`${this.baseUrl}/timelogs/${id}`);
+  }
+
   fetchAllProjects(): Observable<Project[]> {
     return this.getAllProjects().pipe(
       map((data: Project[]) => {

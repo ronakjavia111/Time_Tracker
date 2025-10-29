@@ -63,7 +63,7 @@ export class LogTime implements OnInit {
         title: form.title,
         description: form.description || '',
         date: form.date
-          ? new Date(form.date).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })
+          ? new Date(form.date).toDateString()
           : null,
         hours: form.hours,
         billable: String(form.billable).toUpperCase() === 'YES',

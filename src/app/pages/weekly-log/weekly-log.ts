@@ -123,25 +123,19 @@ export class WeeklyLog implements OnInit {
     const monday = this.weekStart;
 
     const week: { key: string; date: string }[] = [];
-    const formatter = new Intl.DateTimeFormat('en-US', { weekday: 'short' });
+    const formatter = new Intl.DateTimeFormat('en-IN', { weekday: 'short' });
 
     for (let i = 0; i < 5; i++) {
-      console.log(monday);
-
       const date = new Date(monday);
       date.setDate(monday.getDate() + i);
-      console.log(date);
 
       const standardDate = date.toDateString();
 
-      console.log(standardDate);
       week.push({
         key: formatter.format(date).toLowerCase(),
         date: standardDate,
       });
     }
-
-    console.log(week);
 
     return week;
   }

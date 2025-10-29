@@ -11,10 +11,11 @@ import { TimeLogService } from '../../services/time-log-service';
 import { forkJoin } from 'rxjs';
 import { LogDetails } from '../log-details/log-details';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NgToastService, NgToastComponent } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-calendar',
-  imports: [FullCalendarModule, CommonModule, MatDialogModule],
+  imports: [FullCalendarModule, CommonModule, MatDialogModule, NgToastComponent],
   templateUrl: './calendar.html',
   styleUrl: './calendar.css',
 })
@@ -22,7 +23,8 @@ export class Calendar implements OnInit {
   constructor(
     private auth: AuthService,
     private timeLogs: TimeLogService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private toast: NgToastService
   ) {}
 
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
@@ -58,9 +60,14 @@ export class Calendar implements OnInit {
         this.logs = timeLogs
           .filter((x: any) => x.userId === this.userId)
           .map((item: any) => {
-            const projectName = project.get(item.projectId) || 'Unknown Project';
+            const projectName = project.get(item.projectId);
+
+            if (!projectName) {
+              return;
+            }
 
             return {
+              id: item.id,
               userId: item.userId,
               projectId: item.projectId,
               projectName: projectName,
@@ -75,11 +82,11 @@ export class Calendar implements OnInit {
         if (this.calendarComponent && this.calendarComponent.getApi()) {
           this.calendarComponent.getApi().setOption('events', this.logs);
         } else {
-          console.error('Calendar component not available');
+          this.toast.danger('Failed to Load Calendar.');
         }
       },
       error: (err) => {
-        console.error('Error fetching data:', err);
+        this.toast.danger(`Error in fetching data: ${err}`);
 
         if (this.calendarComponent && this.calendarComponent.getApi()) {
           this.calendarComponent.getApi().setOption('events', []);
@@ -112,15 +119,20 @@ export class Calendar implements OnInit {
       listMonth: 'Month Logs',
     },
     eventDidMount: (info) => {
+      const deleteBtn = document.createElement('span');
+      deleteBtn.classList.add('delete-btn');
+      deleteBtn.innerHTML = '<i class="bi bi-trash3-fill"></i>';
+
+      deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        this.deleteEvent(info);
+      });
+
       const eventTitle = info.el.querySelector('.fc-event-title');
 
-      if (eventTitle && !eventTitle.querySelector('span')) {
-        const text = eventTitle.textContent;
-        eventTitle.textContent = '';
-
-        const span = document.createElement('span');
-        span.textContent = text;
-        eventTitle.appendChild(span);
+      if (eventTitle && !info.el.querySelector('.delete-btn')) {
+        eventTitle.appendChild(deleteBtn);
       }
     },
     selectable: true,
@@ -154,6 +166,20 @@ export class Calendar implements OnInit {
     this.dialog.open(LogDetails, {
       width: '400px',
       data: details,
+    });
+  }
+
+  deleteEvent(info: any) {
+    const id = info.event._def.publicId;
+
+    this.timeLogs.deleteLogTime(id).subscribe({
+      next: () => {
+        info.event.remove();
+        this.toast.success('Event Deleted Successfully.');
+      },
+      error: () => {
+        this.toast.danger(`Failed to Delete Event: ${info.event._def.extendedProps.title}`);
+      },
     });
   }
 }

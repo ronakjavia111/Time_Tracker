@@ -5,32 +5,31 @@
   overflow: hidden !important;
   position: relative;
   margin: 1px 10px 1px 5px;
-  border-bottom: 2px solid #1c3755;
+  border: 2px solid #1c3755;
+  padding-left: 4px;
   color: #1c3755;
   font-size: large;
 }
 
-/* Create an inner element that actually scrolls */
-.fc-event-title > span {
-  display: inline-block;
-  min-width: max-content; /* grow only if needed */
-  animation: scroll-text 5s linear infinite;
-  animation-delay: 1s;
+.fc-daygrid-event-dot {
+  display: none;
 }
 
-/* Define smooth scrolling animation */
-@keyframes scroll-text {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+/* Delete button inside event */
+.fc-event .delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  float: right;
+  font-size: 14px;
+  margin: 2px 4px 2px auto;
+  color: #ff0800;
+  opacity: 0.8;
 }
 
-/* Pause animation on hover */
-.fc-event-title:hover > span {
-  animation-play-state: paused;
+.fc-event .delete-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
 }
 
 /* Date Picker */
@@ -87,7 +86,6 @@
       text-align: center;
       vertical-align: middle;
       border-bottom: 1px solid #ccc;
-      
     }
 
     .mat-row-hover:hover {
@@ -194,7 +192,7 @@
   font-size: 12px;
   padding-top: 5px;
   text-wrap: nowrap;
-   margin-bottom: 13px;
+  margin-bottom: 13px;
 }
 
 .action-buttons {
