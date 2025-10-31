@@ -110,10 +110,7 @@ export class DailyLog implements OnInit {
       };
 
       this.timeLog.addLogTime(payload).subscribe({
-        next: (data:any) => {
-          console.log(data);
-          console.log(payload);
-          
+        next: (data:any) => {          
           this.rows = [this.rows, payload];
           this.dialogRef?.close(payload);
         },

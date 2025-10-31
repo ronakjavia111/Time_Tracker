@@ -3097,6 +3097,8 @@ var MatCommonModule = class _MatCommonModule {
 })();
 
 export {
+  coerceArray,
+  MediaMatcher,
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader,
   BACKSPACE,
@@ -3118,8 +3120,6 @@ export {
   FocusMonitor,
   CdkMonitorFocus,
   _VisuallyHiddenLoader,
-  coerceArray,
-  MediaMatcher,
   ObserversModule,
   InteractivityChecker,
   FocusTrapFactory,
@@ -3135,4 +3135,4 @@ export {
   MATERIAL_SANITY_CHECKS,
   MatCommonModule
 };
-//# sourceMappingURL=chunk-52ZI7FNQ.js.map
+//# sourceMappingURL=chunk-ZXOPM3E4.js.map

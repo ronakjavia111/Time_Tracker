@@ -1,11 +1,11 @@
 /* Event Title */
 .fc-event-title {
-  display: block;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  position: relative;
-  margin: 1px 10px 1px 5px;
+  display: flex;
+  align-items: center;
+  gap: 4;
+  margin: 1px 5px 1px 5px;
   border: 2px solid #1c3755;
+  border-radius: 5px;
   padding-left: 4px;
   color: #1c3755;
   font-size: large;
@@ -15,12 +15,21 @@
   display: none;
 }
 
-/* Delete button inside event */
-.fc-event .delete-btn {
+.fc-event-title .title {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-right: 5px;
+}
+
+.fc-event-title .delete-btn {
   background: none;
   border: none;
   cursor: pointer;
-  float: right;
+  float: left;
   font-size: 14px;
   margin: 2px 4px 2px auto;
   color: #ff0800;
@@ -30,6 +39,15 @@
 .fc-event .delete-btn:hover {
   opacity: 1;
   transform: scale(1.1);
+}
+
+.fc-event-title .title::-webkit-scrollbar {
+  height: 4px;
+}
+
+.fc-event-title .title::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
 }
 
 /* Date Picker */

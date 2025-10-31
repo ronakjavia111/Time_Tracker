@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, Input } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGrid from '@fullcalendar/daygrid';
 import timeGrid from '@fullcalendar/timegrid';
@@ -12,6 +12,7 @@ import { forkJoin } from 'rxjs';
 import { LogDetails } from '../log-details/log-details';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NgToastService, NgToastComponent } from 'ng-angular-popup';
+import { Logs } from '../../services/logs';
 
 @Component({
   selector: 'app-calendar',
@@ -20,11 +21,15 @@ import { NgToastService, NgToastComponent } from 'ng-angular-popup';
   styleUrl: './calendar.css',
 })
 export class Calendar implements OnInit {
+  calendarView: 'dayGridMonth' | 'dayGridWeek' = 'dayGridMonth';
+  details: any;
+
   constructor(
     private auth: AuthService,
     private timeLogs: TimeLogService,
     private dialog: MatDialog,
-    private toast: NgToastService
+    private toast: NgToastService,
+    private logService: Logs
   ) {}
 
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
@@ -35,6 +40,32 @@ export class Calendar implements OnInit {
   ngOnInit() {
     this.userId = this.auth.getUserId();
     this.loadData();
+
+    this.logService.logs.subscribe((records: any[]) => {
+      if (Array.isArray(records) && records.length > 0) {
+        const events = records.map((log) => ({
+          id: log.id,
+          title: log.title,
+          start: log.date,
+          extendedProps: {
+            userId: log.userId,
+            projectId: log.projectId,
+            projectName: log.projectName,
+            description: log.description,
+            hours: log.hours,
+            billable: log.billable,
+          },
+        }));
+
+        const calendar = this.calendarComponent?.getApi();
+console.log("Daa", events);
+
+        if (calendar) {
+          calendar.removeAllEventSources();
+          calendar.addEventSource(events);
+        }
+      }
+    });
   }
 
   loadData() {
@@ -57,20 +88,14 @@ export class Calendar implements OnInit {
 
         const project = new Map(projects.map((p: any) => [p.id, p.name]));
 
-        this.logs = timeLogs
+        const logs = timeLogs
           .filter((x: any) => x.userId === this.userId)
           .map((item: any) => {
-            const projectName = project.get(item.projectId);
-
-            if (!projectName) {
-              return;
-            }
-
             return {
               id: item.id,
               userId: item.userId,
               projectId: item.projectId,
-              projectName: projectName,
+              projectName: project.get(item.projectId),
               title: item.title || 'Untitled',
               description: item.description,
               date: new Date(item.date).toISOString(),
@@ -79,11 +104,7 @@ export class Calendar implements OnInit {
             };
           });
 
-        if (this.calendarComponent && this.calendarComponent.getApi()) {
-          this.calendarComponent.getApi().setOption('events', this.logs);
-        } else {
-          this.toast.danger('Failed to Load Calendar.');
-        }
+        this.logService.setInitialLogs(logs);
       },
       error: (err) => {
         this.toast.danger(`Error in fetching data: ${err}`);
@@ -94,10 +115,6 @@ export class Calendar implements OnInit {
       },
     });
   }
-
-  logs: any[] = [];
-  calendarView: 'dayGridMonth' | 'dayGridWeek' = 'dayGridMonth';
-  details: any;
 
   calendarOptions: CalendarOptions = {
     initialView: this.calendarView,
@@ -132,7 +149,15 @@ export class Calendar implements OnInit {
       const eventTitle = info.el.querySelector('.fc-event-title');
 
       if (eventTitle && !info.el.querySelector('.delete-btn')) {
+        const text = eventTitle.textContent;
+        eventTitle.textContent = '';
+
+        const textTag = document.createElement('span');
+        textTag.classList.add('title');
+        textTag.textContent = text;
+
         eventTitle.appendChild(deleteBtn);
+        eventTitle.appendChild(textTag);
       }
     },
     selectable: true,
@@ -172,14 +197,8 @@ export class Calendar implements OnInit {
   deleteEvent(info: any) {
     const id = info.event._def.publicId;
 
-    this.timeLogs.deleteLogTime(id).subscribe({
-      next: () => {
-        info.event.remove();
-        this.toast.success('Event Deleted Successfully.');
-      },
-      error: () => {
-        this.toast.danger(`Failed to Delete Event: ${info.event._def.extendedProps.title}`);
-      },
-    });
+    this.logService.removeLog(id);
+    info.event.remove();
+    this.toast.success('Event Deleted Successfully.');
   }
 }

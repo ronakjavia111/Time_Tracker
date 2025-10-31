@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { TimeLogService } from '../../services/time-log-service';
 import { Project } from '../../interfaces/project';
 import { AuthService } from '../../services/auth-service';
+import { Logs } from '../../services/logs';
 
 @Component({
   selector: 'app-log-time',
@@ -33,6 +34,7 @@ export class LogTime implements OnInit {
 
   constructor(
     private timeLog: TimeLogService,
+    private logService: Logs,
     private auth: AuthService,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<LogTime>,
@@ -62,21 +64,13 @@ export class LogTime implements OnInit {
         projectId: form.projectName,
         title: form.title,
         description: form.description || '',
-        date: form.date
-          ? new Date(form.date).toDateString()
-          : null,
+        date: form.date ? new Date(form.date).toDateString() : null,
         hours: form.hours,
         billable: String(form.billable).toUpperCase() === 'YES',
       };
 
-      this.timeLog.addLogTime(payload).subscribe({
-        next: () => {
-          this.dialogRef?.close(payload);
-        },
-        error: () => {
-          alert(`Failed to add daily log: ${payload.title}`);
-        },
-      });
+      this.logService.addLog(payload);
+      this.dialogRef?.close();
     } else {
       this.logTimeForm.markAllAsTouched();
     }

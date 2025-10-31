@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root', // This makes the service available throughout the application
@@ -10,15 +9,8 @@ export class AuthService {
   private baseUrl = 'http://localhost:3000';
   private email: string | null = null;
   private userId: number | null = null;
-  private tokenBehaviour = new BehaviorSubject<string | null>(this.readToken());
 
-  constructor(private httpClient: HttpClient, private router: Router) {
-    window.addEventListener('storage', (event) => {
-      if (event.key === 'token') {
-        this.tokenBehaviour.next(this.readToken());
-      }
-    });
-  }
+  constructor(private httpClient: HttpClient, private router: Router) {}
 
   login(email: string, password: string) {
     return this.httpClient.post<{ token: string }>(`${this.baseUrl}/auth/login`, {
@@ -28,7 +20,7 @@ export class AuthService {
   }
 
   register(email: string, password: string) {
-    return this.httpClient.post(`${this.baseUrl}/auth/register`, {
+    return this.httpClient.post<{ token: string }>(`${this.baseUrl}/auth/register`, {
       email,
       password,
     });
@@ -39,7 +31,7 @@ export class AuthService {
     this.decodeToken(token);
   }
 
-  readToken(): string | null {
+  getToken(): string | null {
     const token = localStorage.getItem('token');
     if (!token) return null;
 
@@ -54,12 +46,8 @@ export class AuthService {
     }
   }
 
-  getToken(): string | null {
-    return this.tokenBehaviour.value;
-  }
-
   isLoggedIn(): boolean {
-    return !!this.readToken();
+    return !!this.getToken();
   }
 
   logout() {

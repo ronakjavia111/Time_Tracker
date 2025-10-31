@@ -2,9 +2,6 @@ import { Routes } from '@angular/router';
 import { Login } from './auth/login/login';
 import { authGuard } from './core/guards/auth-guard';
 import { guestGuard } from './core/guards/guest-guard';
-import { LogTime } from './pages/log-time/log-time';
-import { DailyLog } from './pages/daily-log/daily-log';
-import { WeeklyLog } from './pages/weekly-log/weekly-log';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
