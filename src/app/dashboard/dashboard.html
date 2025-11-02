@@ -17,33 +17,43 @@
   </button>
 </header>
 
-<div style="display: flex; justify-content: space-around; width: fit-content; margin: 20px">
-  <a
-    class="btn btn-outline-warning"
-    style="font-weight: 500; margin-bottom: auto"
-    routerLink="/dashboard/calendar"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{ exact: true }"
-    >Calendar</a
-  >
-  <a
-    class="btn btn-outline-warning"
-    style="font-weight: 500; margin-left: 10px"
-    (click)="openLogTime()"
-    >Log Time</a
-  >
-  <a
-    class="btn btn-outline-warning"
-    style="font-weight: 500; margin-left: 10px"
-    (click)="openDailyLog()"
-    >Daily Log</a
-  >
-  <a
-    class="btn btn-outline-warning"
-    style="font-weight: 500; margin-left: 10px"
-    (click)="openWeeklyLog()"
-    >Weekly Log</a
-  >
+<div style="display: flex; justify-content: space-between; margin: 20px">
+  <div>
+    <a
+      class="btn btn-outline-warning"
+      style="font-weight: 500; margin-bottom: auto; border-width: 2px"
+      routerLink="/dashboard/calendar"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Calendar</a
+    >
+    <a
+      class="btn btn-outline-warning"
+      style="font-weight: 500; margin-left: 10px; border-width: 2px"
+      (click)="openLogTime()"
+      >Log Time</a
+    >
+    <a
+      class="btn btn-outline-warning"
+      style="font-weight: 500; margin-left: 10px; border-width: 2px"
+      (click)="openDailyLog()"
+      >Daily Log</a
+    >
+    <a
+      class="btn btn-outline-warning"
+      style="font-weight: 500; margin-left: 10px; border-width: 2px"
+      (click)="openWeeklyLog()"
+      >Weekly Log</a
+    >
+  </div>
+  <div>
+    <a
+      class="btn btn-outline-success"
+      style="font-weight: 500; margin-left: 10px; border-width: 2px"
+      (click)="openProject()"
+      >Add Project</a
+    >
+  </div>
 </div>
 
 <router-outlet></router-outlet>

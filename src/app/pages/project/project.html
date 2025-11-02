@@ -1,0 +1,21 @@
+<h3 class="mt-4 text-center text-decoration-underline">Log Time</h3>
+
+<mat-dialog-content class="pt-3">
+  <form [formGroup]="projectForm" class="popup-form">
+    <mat-form-field class="w-100 mb-2">
+      <mat-label class="fs-5">Name</mat-label>
+      <input class="fw-bold fs-4" matInput formControlName="name" />
+
+      @if(projectForm.get('name')?.touched && projectForm.get('name')?.hasError('required')){
+      <mat-error class="mb-1 text-danger">Name is required</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="me-2">
+  <button class="cancel-button" (click)="onClose()">Cancel</button>
+  <button class="submit-button" (click)="onSubmit()" [disabled]="projectForm.invalid">
+    Submit
+  </button>
+</mat-dialog-actions>
