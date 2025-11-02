@@ -14,6 +14,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TimeLogService } from '../../services/time-log-service';
 import { AuthService } from '../../services/auth-service';
 import { Project } from '../../interfaces/project';
+import { Logs } from '../../services/logs';
 
 @Component({
   selector: 'app-weekly-log',
@@ -46,7 +47,8 @@ export class WeeklyLog implements OnInit {
     private auth: AuthService,
     private dialogRef: MatDialogRef<WeeklyLog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private timeLog: TimeLogService
+    private timeLog: TimeLogService,
+    private logService: Logs
   ) {}
   ngOnInit(): void {
     this.setWeek(new Date());
@@ -201,14 +203,8 @@ export class WeeklyLog implements OnInit {
             billable: String(record.billable).toUpperCase() === 'YES',
           };
 
-          this.timeLog.addLogTime(payload).subscribe({
-            next: () => {
-              this.dialogRef?.close(payload);
-            },
-            error: () => {
-              alert(`Failed to add daily log: ${payload.title}`);
-            },
-          });
+          this.logService.addLog(payload);
+          this.dialogRef?.close(payload);
         }
       }
     });

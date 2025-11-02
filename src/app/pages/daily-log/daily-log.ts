@@ -16,6 +16,7 @@ import { Project } from '../../interfaces/project';
 import { AuthService } from '../../services/auth-service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgToastService } from 'ng-angular-popup';
+import { Logs } from '../../services/logs';
 
 @Component({
   selector: 'app-daily-log',
@@ -41,7 +42,8 @@ export class DailyLog implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private dialogRef: MatDialogRef<DailyLog>,
-    private toast:NgToastService,
+    private toast: NgToastService,
+    private logService: Logs,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.logTimeForm = this.fb.group({
@@ -109,15 +111,8 @@ export class DailyLog implements OnInit {
         billable: String(record.billable).toUpperCase() === 'YES',
       };
 
-      this.timeLog.addLogTime(payload).subscribe({
-        next: (data:any) => {          
-          this.rows = [this.rows, payload];
-          this.dialogRef?.close(payload);
-        },
-        error: () => {
-          this.toast.danger(`Failed to add daily log: ${payload.title}`);
-        },
-      });
+      this.logService.addLog(payload);
+      this.dialogRef?.close(payload);
     });
   }
 

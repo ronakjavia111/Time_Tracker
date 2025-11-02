@@ -23,6 +23,7 @@ import { Logs } from '../../services/logs';
 export class Calendar implements OnInit {
   calendarView: 'dayGridMonth' | 'dayGridWeek' = 'dayGridMonth';
   details: any;
+  projectsList: any = [];
 
   constructor(
     private auth: AuthService,
@@ -34,7 +35,7 @@ export class Calendar implements OnInit {
 
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
 
-  userId: number | null = 0;
+  userId: string | null = '';
   selectedView: 'dayGridMonth' | 'dayGridWeek' = 'dayGridMonth';
 
   ngOnInit() {
@@ -58,9 +59,10 @@ export class Calendar implements OnInit {
         }));
 
         const calendar = this.calendarComponent?.getApi();
-console.log("Daa", events);
+        console.log(calendar);
 
         if (calendar) {
+          console.log(events);
           calendar.removeAllEventSources();
           calendar.addEventSource(events);
         }
@@ -70,8 +72,8 @@ console.log("Daa", events);
 
   loadData() {
     forkJoin({
-      timeLogs: this.timeLogs.getAllTimeLogs(),
-      projects: this.timeLogs.getAllProjects(),
+      timeLogs: this.timeLogs.fetchAllTimeLogs(),
+      projects: this.timeLogs.fetchAllProjects(),
     }).subscribe({
       next: (res: any) => {
         const { timeLogs, projects } = res;
@@ -87,6 +89,8 @@ console.log("Daa", events);
         }
 
         const project = new Map(projects.map((p: any) => [p.id, p.name]));
+
+        this.projectsList = projects;
 
         const logs = timeLogs
           .filter((x: any) => x.userId === this.userId)
@@ -107,7 +111,7 @@ console.log("Daa", events);
         this.logService.setInitialLogs(logs);
       },
       error: (err) => {
-        this.toast.danger(`Error in fetching data: ${err}`);
+        this.toast.danger('Error in fetching data');
 
         if (this.calendarComponent && this.calendarComponent.getApi()) {
           this.calendarComponent.getApi().setOption('events', []);
@@ -137,6 +141,7 @@ console.log("Daa", events);
     },
     eventDidMount: (info) => {
       const deleteBtn = document.createElement('span');
+
       deleteBtn.classList.add('delete-btn');
       deleteBtn.innerHTML = '<i class="bi bi-trash3-fill"></i>';
 
@@ -200,5 +205,18 @@ console.log("Daa", events);
     this.logService.removeLog(id);
     info.event.remove();
     this.toast.success('Event Deleted Successfully.');
+  }
+
+  deleteProject(projectId: string) {
+    this.projectsList.pop(projectId);
+    this.logService.loadData();
+    this.timeLogs.deleteProject(projectId).subscribe({
+      next: () => {
+        this.toast.success('Project Deleted Successfully.');
+      },
+      error: () => {
+        this.toast.danger('Failed to Delete Project.');
+      },
+    });
   }
 }

@@ -6,6 +6,7 @@ import { LogTime } from '../pages/log-time/log-time';
 import { DailyLog } from '../pages/daily-log/daily-log';
 import { WeeklyLog } from '../pages/weekly-log/weekly-log';
 import { Logs } from '../services/logs';
+import { Project } from '../pages/project/project';
 
 @Component({
   selector: 'app-dashboard',
@@ -48,6 +49,17 @@ export class Dashboard {
   openWeeklyLog() {
     this.dialog.open(WeeklyLog, {
       width: '90vw',
+      maxWidth: '1200px',
+      height: 'auto',
+      panelClass: 'blur-dialog-container',
+      backdropClass: 'blurred-backdrop',
+      disableClose: true,
+    });
+  }
+
+  openProject() {
+    this.dialog.open(Project, {
+      width: '20vw',
       maxWidth: '1200px',
       height: 'auto',
       panelClass: 'blur-dialog-container',

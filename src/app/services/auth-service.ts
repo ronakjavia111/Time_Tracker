@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 export class AuthService {
   private baseUrl = 'http://localhost:3000';
   private email: string | null = null;
-  private userId: number | null = null;
+  private userId: string | null = null;
 
   constructor(private httpClient: HttpClient, private router: Router) {}
 
@@ -67,7 +67,7 @@ export class AuthService {
     }
   }
 
-  getUserId(): number | null {
+  getUserId(): string | null {
     if (!this.userId) {
       const token = this.getToken();
       if (token) this.decodeToken(token);
