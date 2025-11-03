@@ -5,7 +5,7 @@ import {
   Platform,
   coerceElement,
   coerceNumberProperty
-} from "./chunk-6D6IMXOJ.js";
+} from "./chunk-HYPBEKK3.js";
 import {
   BidiModule
 } from "./chunk-QZFVD5EQ.js";
@@ -3097,8 +3097,6 @@ var MatCommonModule = class _MatCommonModule {
 })();
 
 export {
-  coerceArray,
-  MediaMatcher,
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader,
   BACKSPACE,
@@ -3120,6 +3118,8 @@ export {
   FocusMonitor,
   CdkMonitorFocus,
   _VisuallyHiddenLoader,
+  coerceArray,
+  MediaMatcher,
   ObserversModule,
   InteractivityChecker,
   FocusTrapFactory,
@@ -3135,4 +3135,4 @@ export {
   MATERIAL_SANITY_CHECKS,
   MatCommonModule
 };
-//# sourceMappingURL=chunk-QIZ2QPXU.js.map
+//# sourceMappingURL=chunk-BJZXHHO6.js.map

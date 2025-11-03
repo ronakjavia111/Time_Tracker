@@ -45,8 +45,8 @@ export class Project {
     };
 
     this.timeLog.addProject(payload).subscribe({
-      next: () => {
-        this.dialogRef.close();
+      next: (record) => {
+        this.dialogRef.close(record);
         this.toast.success('Project Added Successfully.');
       },
       error: () => {

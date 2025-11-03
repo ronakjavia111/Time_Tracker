@@ -1,6 +1,6 @@
 import {
   MediaMatcher
-} from "./chunk-QIZ2QPXU.js";
+} from "./chunk-BJZXHHO6.js";
 import {
   ANIMATION_MODULE_TYPE,
   InjectionToken,
@@ -65,11 +65,11 @@ function _isTestEnvironment() {
 }
 
 export {
+  _isTestEnvironment,
   MATERIAL_ANIMATIONS,
   AnimationCurves,
   AnimationDurations,
   _getAnimationsState,
-  _animationsDisabled,
-  _isTestEnvironment
+  _animationsDisabled
 };
-//# sourceMappingURL=chunk-JG67QBWZ.js.map
+//# sourceMappingURL=chunk-64NJLJXN.js.map

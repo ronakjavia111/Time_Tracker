@@ -23,20 +23,26 @@ export class Logs {
   }
 
   addLog(log: any) {
-    this.timeLog.addLogTime(log).subscribe((newLog) => {
-      const current = this.logsSubject.getValue();
-      this.logsSubject.next([...current, newLog.data]);
+    this.timeLog.addLogTime(log).subscribe({
+      next: (newLog) => {
+        const current = this.logsSubject.getValue();
+        this.logsSubject.next([...current, newLog.data]);
+        this.toast.success('Log Added Successfully.');
+      },
+      error: () => {
+        this.toast.danger('Failed to Add Log');
+      },
     });
   }
 
-  removeLog(id: number) {
+  deleteLog(id: number) {
     this.timeLog.deleteLogTime(id).subscribe({
       next: () => {
         const updated = this.logsSubject.getValue().filter((log) => log.id != id);
         this.logsSubject.next(updated);
       },
       error: () => {
-        this.toast.danger('Failed to Delete Lg');
+        this.toast.danger('Failed to Delete Log');
       },
     });
   }

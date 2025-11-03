@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Input } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, Signal } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGrid from '@fullcalendar/daygrid';
 import timeGrid from '@fullcalendar/timegrid';
@@ -41,7 +41,9 @@ export class Calendar implements OnInit {
   ngOnInit() {
     this.userId = this.auth.getUserId();
     this.loadData();
+  }
 
+  ngAfterViewInit() {
     this.logService.logs.subscribe((records: any[]) => {
       if (Array.isArray(records) && records.length > 0) {
         const events = records.map((log) => ({
@@ -59,11 +61,9 @@ export class Calendar implements OnInit {
         }));
 
         const calendar = this.calendarComponent?.getApi();
-        console.log(calendar);
 
         if (calendar) {
-          console.log(events);
-          calendar.removeAllEventSources();
+          calendar.removeAllEvents();
           calendar.addEventSource(events);
         }
       }
@@ -89,8 +89,7 @@ export class Calendar implements OnInit {
         }
 
         const project = new Map(projects.map((p: any) => [p.id, p.name]));
-
-        this.projectsList = projects;
+        this.projectsList = projects.sort((a: any, b: any) => a.name.localeCompare(b.name));
 
         const logs = timeLogs
           .filter((x: any) => x.userId === this.userId)
@@ -110,7 +109,7 @@ export class Calendar implements OnInit {
 
         this.logService.setInitialLogs(logs);
       },
-      error: (err) => {
+      error: () => {
         this.toast.danger('Error in fetching data');
 
         if (this.calendarComponent && this.calendarComponent.getApi()) {
@@ -165,6 +164,21 @@ export class Calendar implements OnInit {
         eventTitle.appendChild(textTag);
       }
     },
+    eventDrop: (info) => {
+      const payload = {
+        timeLogId: info.event.id,
+        date: info.event.start?.toString(),
+      };
+
+      this.timeLogs.updateLogTime(payload).subscribe({
+        next: () => {
+          this.toast.success('Event Updated Successfully');
+        },
+        error: () => {
+          this.toast.danger('Failed to Updated Event');
+        },
+      });
+    },
     selectable: true,
     editable: true,
     height: 'auto',
@@ -202,17 +216,29 @@ export class Calendar implements OnInit {
   deleteEvent(info: any) {
     const id = info.event._def.publicId;
 
-    this.logService.removeLog(id);
+    this.logService.deleteLog(id);
     info.event.remove();
     this.toast.success('Event Deleted Successfully.');
   }
 
   deleteProject(projectId: string) {
-    this.projectsList.pop(projectId);
-    this.logService.loadData();
+    this.projectsList = this.projectsList.filter((x: any) => x.id != projectId);
+
     this.timeLogs.deleteProject(projectId).subscribe({
       next: () => {
         this.toast.success('Project Deleted Successfully.');
+
+        this.calendarComponent
+          ?.getApi()
+          ?.getEvents()
+          .filter((e: any) => e._def.extendedProps.projectId === projectId);
+
+        const removeEvents = this.calendarComponent
+          ?.getApi()
+          ?.getEvents()
+          .filter((e: any) => e._def.extendedProps.projectId === projectId);
+
+        removeEvents.forEach((e: any) => e.remove());
       },
       error: () => {
         this.toast.danger('Failed to Delete Project.');

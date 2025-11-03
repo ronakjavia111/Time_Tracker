@@ -15,7 +15,11 @@ import { Project } from '../pages/project/project';
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
-  constructor(private auth: AuthService, private dialog: MatDialog, private logService: Logs) {}
+  constructor(
+    private auth: AuthService,
+    private dialog: MatDialog,
+    private logService: Logs
+  ) {}
 
   logout() {
     this.auth.logout();
@@ -58,7 +62,7 @@ export class Dashboard {
   }
 
   openProject() {
-    this.dialog.open(Project, {
+    const dialog = this.dialog.open(Project, {
       width: '20vw',
       maxWidth: '1200px',
       height: 'auto',

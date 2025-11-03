@@ -26,6 +26,10 @@ export class TimeLogService {
     return this.httpClient.post<any>(`${this.baseUrl}/timelogs`, payload);
   }
 
+  updateLogTime(payload: any) {
+    return this.httpClient.patch<any>(`${this.baseUrl}/timelogs`, payload);
+  }
+
   deleteLogTime(id: any) {
     return this.httpClient.delete<any>(`${this.baseUrl}/timelogs`, { body: { id: id } });
   }
