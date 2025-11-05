@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Input, Signal } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGrid from '@fullcalendar/daygrid';
 import timeGrid from '@fullcalendar/timegrid';
@@ -41,9 +41,7 @@ export class Calendar implements OnInit {
   ngOnInit() {
     this.userId = this.auth.getUserId();
     this.loadData();
-  }
 
-  ngAfterViewInit() {
     this.logService.logs.subscribe((records: any[]) => {
       if (Array.isArray(records) && records.length > 0) {
         const events = records.map((log) => ({
@@ -63,6 +61,8 @@ export class Calendar implements OnInit {
         const calendar = this.calendarComponent?.getApi();
 
         if (calendar) {
+          console.log('D', calendar.getEvents());
+
           calendar.removeAllEvents();
           calendar.addEventSource(events);
         }
@@ -227,20 +227,29 @@ export class Calendar implements OnInit {
       next: () => {
         this.toast.success('Project Deleted Successfully.');
 
-        this.calendarComponent
-          ?.getApi()
-          ?.getEvents()
-          .filter((e: any) => e._def.extendedProps.projectId === projectId);
-
         const removeEvents = this.calendarComponent
           ?.getApi()
           ?.getEvents()
           .filter((e: any) => e._def.extendedProps.projectId === projectId);
-
         removeEvents.forEach((e: any) => e.remove());
       },
       error: () => {
         this.toast.danger('Failed to Delete Project.');
+      },
+    });
+  }
+
+  addNewEvent(newLog: any) {
+    const calendarApi = this.calendarComponent.getApi();
+    calendarApi.addEvent({
+      id: newLog.id,
+      title: newLog.title,
+      start: newLog.date,
+      extendedProps: {
+        projectName: newLog.projectName,
+        description: newLog.description,
+        hours: newLog.hours,
+        billable: newLog.billable,
       },
     });
   }

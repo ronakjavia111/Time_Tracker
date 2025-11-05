@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth-service';
 import { Project } from '../interfaces/project';
 import { combineLatest, map, Observable } from 'rxjs';
-import { Log } from '../interfaces/log';
 
 @Injectable({
   providedIn: 'root',

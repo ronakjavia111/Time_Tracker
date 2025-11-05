@@ -1,5 +1,10 @@
-<div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-  <h2 class="text-center daily-log-title" style="margin: 10px 0px 0px 20px; text-decoration: underline;">Weekly Log</h2>
+<div style="display: flex; justify-content: space-between; margin-bottom: 15px">
+  <h2
+    class="text-center daily-log-title"
+    style="margin: 10px 0px 0px 20px; text-decoration: underline"
+  >
+    Weekly Log
+  </h2>
   <button mat-raised-button color="secondary" (click)="onClose()" class="close">Close</button>
 </div>
 
@@ -80,8 +85,6 @@
           @for (status of billableStatus; track status.key) {
           <mat-option [value]="status.value">{{ status.value }}</mat-option
           >}
-          <!-- <mat-option value="YES">YES</mat-option>
-          <mat-option value="NO">NO</mat-option> -->
         </mat-select>
         @if(row.errors?.billable){
         <div class="error-msg">{{ row.errors.billable }}</div>
@@ -130,18 +133,6 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns" class="text-bg-success"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns" class="mat-row-hover"></tr>
-
-    <!-- Footer Row for Total Hours per Day [Currently NOT VISIBLE]-->
-    <tr class="total-row">
-      <td colspan="3" class="text-end fw-bold">Total per Day:</td>
-      @for (day of weekDays; track day.key) {
-      <td class="fw-bold">
-        {{ getDayTotal(day.key) | number : '1.2-2' }}
-      </td>
-      }
-      <td></td>
-      <td></td>
-    </tr>
   </table>
 
   <div class="mt-3 d-flex justify-content-start gap-2 ms-3 action-buttons-row">

@@ -58,11 +58,7 @@ export class DailyLog implements OnInit {
 
     this.addRow();
   }
-
-  get logs(): FormArray {
-    return this.logTimeForm.get('logs') as FormArray;
-  }
-
+  
   addRow() {
     const row = this.fb.group({
       title: ['', Validators.required],

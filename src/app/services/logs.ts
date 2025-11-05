@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { TimeLogService } from './time-log-service';
 import { NgToastService } from 'ng-angular-popup';
 
@@ -22,17 +22,19 @@ export class Logs {
     });
   }
 
-  addLog(log: any) {
-    this.timeLog.addLogTime(log).subscribe({
-      next: (newLog) => {
-        const current = this.logsSubject.getValue();
-        this.logsSubject.next([...current, newLog.data]);
-        this.toast.success('Log Added Successfully.');
-      },
-      error: () => {
-        this.toast.danger('Failed to Add Log');
-      },
-    });
+  async addLog(log: any) {
+    try {
+      const newLog = await firstValueFrom(this.timeLog.addLogTime(log));
+      const current = this.logsSubject.getValue();
+
+      this.logsSubject.next([...current, newLog.data]);
+      this.toast.success('Log Added Successfully.');
+
+      return newLog;
+    } catch (error) {
+      this.toast.danger('Failed to Add Log');
+      throw error;
+    }
   }
 
   deleteLog(id: number) {

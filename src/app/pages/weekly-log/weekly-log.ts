@@ -123,7 +123,6 @@ export class WeeklyLog implements OnInit {
 
   getCurrentWeekDates(): { key: string; date: string }[] {
     const monday = this.weekStart;
-
     const week: { key: string; date: string }[] = [];
     const formatter = new Intl.DateTimeFormat('en-IN', { weekday: 'short' });
 
@@ -142,7 +141,7 @@ export class WeeklyLog implements OnInit {
     return week;
   }
 
-  // Format week display, e.g., "MM dd – MM dd, yyyy"
+  // Format week display
   getWeekRangeDisplay(): string {
     const format: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
     const start = this.weekStart.toLocaleDateString('en-IN', format);
@@ -157,22 +156,13 @@ export class WeeklyLog implements OnInit {
     let total = 0;
 
     for (const day of this.weekDays) {
-      const h = row.hours[day.key];
-      if (h) total += this.timeToDecimal(h);
+      const hour = row.hours[day.key];
+      if (hour) total += this.timeToDecimal(hour);
     }
 
     return total;
   }
 
-  // Total hours for a single day across all rows
-  getDayTotal(dayKey: string): number {
-    return this.rows.reduce((sum, row) => {
-      const h = row.hours[dayKey];
-      return sum + (h ? this.timeToDecimal(h) : 0);
-    }, 0);
-  }
-
-  // Convert HH:mm string to decimal hours
   timeToDecimal(time: string): number {
     if (!time) return 0;
     const [h, m] = time.split(':').map(Number);

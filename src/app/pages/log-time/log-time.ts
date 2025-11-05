@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -32,6 +32,8 @@ export class LogTime implements OnInit {
   projects: Project[] = [];
   selectedProject: string = '';
 
+  @Output() logAdded = new EventEmitter<any>();
+
   constructor(
     private timeLog: TimeLogService,
     private logService: Logs,
@@ -56,7 +58,7 @@ export class LogTime implements OnInit {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.logTimeForm.valid) {
       const form = this.logTimeForm.value;
       const payload = {
@@ -68,8 +70,10 @@ export class LogTime implements OnInit {
         hours: form.hours,
         billable: String(form.billable).toUpperCase() === 'YES',
       };
-
-      this.logService.addLog(payload);
+ 
+      const record = await this.logService.addLog(payload);
+      this.logAdded.emit(record);
+      
       this.dialogRef?.close();
     } else {
       this.logTimeForm.markAllAsTouched();
