@@ -40,6 +40,7 @@ export class Logs {
       next: () => {
         const updated = this.logsSubject.getValue().filter((log) => log.id != id);
         this.logsSubject.next(updated);
+        this.toast.success('Log Deleted Successfully.');
       },
       error: () => {
         this.toast.danger('Failed to Delete Log');

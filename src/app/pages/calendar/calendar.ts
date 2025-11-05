@@ -218,7 +218,6 @@ export class Calendar implements OnInit {
 
     this.logService.deleteLog(id);
     info.event.remove();
-    this.toast.success('Event Deleted Successfully.');
   }
 
   deleteProject(projectId: string) {

@@ -7,28 +7,21 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private baseUrl = 'http://localhost:3000';
-  private email: string | null = null;
-  private userId: string | null = null;
+  private email!: string;
+  private userId!: string;
 
   constructor(private httpClient: HttpClient, private router: Router) {}
 
-  login(email: string, password: string) {
-    return this.httpClient.post<{ token: string }>(`${this.baseUrl}/auth/login`, {
-      email,
-      password,
-    });
+  login(payload: any) {
+    return this.httpClient.post<{ token: string }>(`${this.baseUrl}/auth/login`, payload);
   }
 
-  register(email: string, password: string) {
-    return this.httpClient.post<{ token: string }>(`${this.baseUrl}/auth/register`, {
-      email,
-      password,
-    });
+  register(payload: any) {
+    return this.httpClient.post<{ token: string }>(`${this.baseUrl}/auth/register`, payload);
   }
 
   saveToken(token: string) {
     localStorage.setItem('token', token);
-    this.decodeToken(token);
   }
 
   getToken(): string | null {

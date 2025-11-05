@@ -25,9 +25,14 @@ export class Login {
 
   login() {
     if (this.form.invalid) return;
-    const { email, password } = this.form.value;
 
-    this.auth.login(email!, password!).subscribe({
+    const { email, password } = this.form.value;
+    const payload = {
+      email: email,
+      password: password,
+    };
+
+    this.auth.login(payload).subscribe({
       next: (res) => {
         this.auth.saveToken(res.token);
         this.router.navigate(['/dashboard']);
@@ -42,8 +47,6 @@ export class Login {
   });
 
   togglePassword(): void {
-    console.log('Toggle Password: ', this.hidePassword);
-
     this.hidePassword = !this.hidePassword;
   }
 }

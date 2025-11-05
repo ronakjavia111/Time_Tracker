@@ -17,14 +17,14 @@ import { AuthService } from '../../services/auth-service';
   styleUrl: './register.css',
 })
 export class Register {
+  constructor(private auth: AuthService, private router: Router) {}
+
   passwordMatchValidator: ValidatorFn = (formGroup: any): ValidationErrors | null => {
     const password = formGroup.get('password')?.value;
     const confirmPassword = formGroup.get('confirmPassword')?.value;
 
     return password === confirmPassword ? null : { passwordMismatch: true };
   };
-
-  constructor(private auth: AuthService, private router: Router) {}
 
   form = new FormGroup(
     {
@@ -40,8 +40,12 @@ export class Register {
   register() {
     if (this.form.invalid) return;
     const { email, password } = this.form.value;
+    const payload = {
+      email: email,
+      password: password,
+    };
 
-    this.auth.register(email!, password!).subscribe({
+    this.auth.register(payload).subscribe({
       next: (res) => {
         this.router.navigate(['/login']);
       },

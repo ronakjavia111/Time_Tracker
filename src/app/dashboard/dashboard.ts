@@ -5,7 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { LogTime } from '../pages/log-time/log-time';
 import { DailyLog } from '../pages/daily-log/daily-log';
 import { WeeklyLog } from '../pages/weekly-log/weekly-log';
-import { Logs } from '../services/logs';
 import { Project } from '../pages/project/project';
 
 @Component({
@@ -15,27 +14,17 @@ import { Project } from '../pages/project/project';
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
-  constructor(
-    private auth: AuthService,
-    private dialog: MatDialog,
-    private logService: Logs
-  ) {}
+  constructor(private auth: AuthService, private dialog: MatDialog) {}
 
   logout() {
     this.auth.logout();
   }
 
   openLogTime() {
-    const dialog = this.dialog.open(LogTime, {
+    this.dialog.open(LogTime, {
       panelClass: 'blur-dialog-container',
       backdropClass: 'blurred-backdrop',
       disableClose: true,
-    });
-
-    dialog.afterClosed().subscribe((record: any) => {
-      if (record) {
-        this.logService.addLog(record);
-      }
     });
   }
 
@@ -62,7 +51,7 @@ export class Dashboard {
   }
 
   openProject() {
-    const dialog = this.dialog.open(Project, {
+    this.dialog.open(Project, {
       width: '20vw',
       maxWidth: '1200px',
       height: 'auto',

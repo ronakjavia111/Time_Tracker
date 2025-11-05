@@ -13,7 +13,7 @@ export class TimeLogService {
 
   baseUrl: string = 'http://localhost:3000';
   defaultProject = {
-    id: 0,
+    id: '',
     name: '',
     userId: '',
   };
